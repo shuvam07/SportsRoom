@@ -1,0 +1,23 @@
+{% extends "login/base.html" %}
+{% block content %}
+
+<div class="jumbotron">
+	<h1>Please Login</h1>
+	<form action="{% url 'login:user_login' %}" method="POST">
+		{% csrf_token %}
+
+		
+		<label for="username">Username:</label>
+		<input type="text" name="username" placeholder="Enter username">
+
+		<label form="password">Password:</label>
+		<input type="password" name="password" placeholder="Enter password">
+
+		<input type="submit" name="" value="Login">
+		<small>
+			<a href="{% url 'password_reset' %}">Forgotten Password ?</a>
+		</small>
+	</form>
+</div>
+
+{% endblock %}
