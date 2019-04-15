@@ -94,7 +94,7 @@ def processRequest(request):
     pendingRequest = EquipmentRequest.objects.get(reqId=reqId)
     print(pendingRequest)
     currentTime = datetime.today()
-    if(isAcceptRequest == 1):
+    if(int(isAcceptRequest) == 1):
         pendingRequest.reqStatus    = 1
         pendingRequest.dtAvailed    = currentTime
         pendingRequest.dtOfExpRet   = currentTime + timedelta(7)
