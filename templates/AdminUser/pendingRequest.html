@@ -29,8 +29,8 @@
         <td>{{ pendingRequest.dtOfRequest.date }}</td>
 
         <td>
-            <a href="{% url 'sportsEquipment:processRequest' %}?reqId={{ pendingRequest.reqId }}&isAcceptRequest=True" class="btn btn-success btn-sm" role="button" aria-pressed="true" > Approve</a>
-            <a href="{% url 'sportsEquipment:processRequest' %}?reqId={{ pendingRequest.reqId }}&isAcceptRequest=False" class="btn btn-danger btn-sm" role="button" aria-pressed="true" > Reject</a>
+            <a href="{% url 'sportsEquipment:processRequest' %}?reqId={{ pendingRequest.reqId }}&isAcceptRequest=1" class="btn btn-success btn-sm" role="button" aria-pressed="true" > Approve</a>
+            <a href="{% url 'sportsEquipment:processRequest' %}?reqId={{ pendingRequest.reqId }}&isAcceptRequest=0" class="btn btn-danger btn-sm" role="button" aria-pressed="true" > Reject</a>
         </td>
 
 

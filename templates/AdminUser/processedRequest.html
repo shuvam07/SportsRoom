@@ -35,10 +35,13 @@
         <td>
             {% if processedRequest.reqStatus == 1 %}
                 <a href="#" class="btn btn-success btn-sm" role="button" aria-pressed="true" > Approved </a>
-                <a href="{% url 'sportsEquipment:processReturnRequest' %}?reqId={{ pendingRequest.reqId }}" class="btn btn-primary btn-sm" role="button" aria-pressed="true" > Return</a>
+                <a href="{% url 'sportsEquipment:processReturnRequest' %}?reqId={{ processedRequest.reqId }}" class="btn btn-primary btn-sm" role="button" aria-pressed="true" > Return</a>
+
+            {% elif processedRequest.reqStatus == 2%}
+                <a href="#" class="btn btn-danger btn-sm" role="button" aria-pressed="true" > Rejected </a>
 
             {% else %}
-                <a href="#" class="btn btn-danger btn-sm" role="button" aria-pressed="true" > Rejected </a>
+                <a href="#" class="btn btn-secondary btn-sm" role="button" aria-pressed="true" > Returned </a>
             {% endif %}
         </td>
 

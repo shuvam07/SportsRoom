@@ -3,29 +3,65 @@
     <head>
         <title>Sports Room</title>
     </head>
-
-    <link rel="stylesheet" href="{% static '/css/style.css '%}">
-    <link rel="stylesheet" href="{% static '/css/bootstrap.min.css '%}">
+    {% load static %}
+    <link rel="stylesheet" href="{% static '/css/style.css'%}">
+    <link rel="stylesheet" href="{% static '/css/bootstrap.min.css'%}">
 
     <body>
         <nav class="navbar navbar-expand navbar-dark bg-dark">
-          <a class="navbar-brand" href="#">Always expand</a>
+          <a class="navbar-brand" href="#">Sportsroom@IIITB</a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample02" aria-controls="navbarsExample02" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
 
           <div class="collapse navbar-collapse" id="navbarsExample02">
-            <ul class="navbar-nav mr-auto">
+
+            {% if user.is_superuser %}
+              <ul class="navbar-nav mr-auto">
               <li class="nav-item active">
-                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="{% url 'sportsEquipment:pendingRequest' %}">Pending Request <span class="sr-only">(current)</span></a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Link</a>
+
+              <li class="nav-item active">
+                <a class="nav-link" href="{% url 'sportsEquipment:approvedRequest' %}">Processed Request <span class="sr-only">(current)</span></a>
               </li>
+              <!--<li class="nav-item">-->
+              <!--<li class="nav-item active">-->
+                <!--<a class="nav-link" href="#">View requests <span class="sr-only">(current)</span></a>-->
+              <!--</li>-->
+
             </ul>
-            <form class="form-inline my-2 my-md-0">
-              <input class="form-control" type="text" placeholder="Search">
-            </form>
+            {% else %}
+              <ul class="navbar-nav mr-auto">
+              <li class="nav-item active">
+                <a class="nav-link" href="{% url 'sportsEquipment:eqpRequest' %}">Request Equipment <span class="sr-only">(current)</span></a>
+              </li>
+              <!--<li class="nav-item">-->
+              <li class="nav-item active">
+                <a class="nav-link" href="{% url 'sportsEquipment:viewRequest' %}">View Requests <span class="sr-only">(current)</span></a>
+              </li>
+
+            </ul>
+            {% endif %}
+
+
+              <div align="right">
+                  <li class="nav-item">
+                    <li class="nav-link ">
+                        <font color="white">Hello, {{ user.username }}</font>
+                  {% if user.is_authenticated %}
+                  <li class="nav-item"><a class="nav-link" href="{% url 'login:logout' %}">Logout</a></li>
+                    {% else %}
+                  <li class="nav-item"><a class="nav-link" href="{% url 'login:user_login' %}">Login</a></li>
+                    {% endif %}
+                    </li>
+                  </li>
+
+              </div>
+            <!--<form class="form-inline my-2 my-md-0">-->
+              <!--<input class="form-control" type="text" placeholder="Search">-->
+            <!--</form>-->
+
           </div>
         </nav>
 
@@ -39,4 +75,4 @@
 
     </body>
 
-</html>>
+</html>

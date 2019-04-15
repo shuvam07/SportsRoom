@@ -22,8 +22,9 @@ urlpatterns = [
     path('',views.index,name='index'),
     path('admin/', admin.site.urls),
     path('login/',include('login.urls')),
+    path('sportsEquipment/',include('sportsEquipment.urls')),
     path('logout/',views.user_logout,name="logout"),
-    path('special/',views.special,name="special"),
+    # path('special/',views.special,name="special"),
 
     # path('password-reset/',auth_views.password_reset,name="password_reset"),
     # path("password-reset/done/",auth_views.password_reset_done,name="password_reset_done"),

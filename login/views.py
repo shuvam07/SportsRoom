@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
-from Login.forms import UserForm,UserProfileInfoForm
-from Login.models import UserProfileInfo
+from login.forms import UserForm,UserProfileInfoForm
+from login.models import UserProfileInfo
 
 
 from django.contrib.auth import authenticate,login,logout
@@ -69,8 +69,8 @@ def user_login(request):
             else:
                 return HttpResponse("ACCOUNT NOT ACTIVE")
         else:
-            print("Login Failed")
-            return HttpResponse("Invalid Login Details")
+            print("login Failed")
+            return HttpResponse("Invalid login Details")
 
     else:
-        return render(request,'Login/Login.html')
+        return render(request,'Login/login.html')
