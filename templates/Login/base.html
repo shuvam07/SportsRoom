@@ -17,7 +17,7 @@
           <li class="nav-item"><a class="nav-link" href="{% url 'login:register' %}">Register</a></li>
 
           {% if user.is_authenticated %}
-            <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'login:logout' %}">Logout</a></li>
           {% else %}
           <li class="nav-item"><a class="nav-link" href="{% url 'login:user_login' %}">Login</a></li>
           {% endif %}

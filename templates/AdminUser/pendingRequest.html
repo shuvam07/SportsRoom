@@ -1,0 +1,46 @@
+{% extends 'MasterLayout/baseLayout.html' %}
+
+{% block body %}
+
+  <div class="container">
+    <br>
+
+    <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Request No</th>
+        <th>Equipment</th>
+        <th>Quantity</th>
+        <th>Username</th>
+        <th>Date of Request</th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+
+      {% for pendingRequest in lstPendingRequest %}
+
+      <tr>
+        <td>{{ pendingRequest.reqId }}
+        <td>{{ pendingRequest.eqp.eqpName }}</td>
+        <td>{{ pendingRequest.quantity }} </td>
+        <td>{{ pendingRequest.user.username }}</td>
+        <td>{{ pendingRequest.dtOfRequest.date }}</td>
+
+        <td>
+            <a href="{% url 'sportsEquipment:processRequest' %}?reqId={{ pendingRequest.reqId }}&isAcceptRequest=True" class="btn btn-success btn-sm" role="button" aria-pressed="true" > Approve</a>
+            <a href="{% url 'sportsEquipment:processRequest' %}?reqId={{ pendingRequest.reqId }}&isAcceptRequest=False" class="btn btn-danger btn-sm" role="button" aria-pressed="true" > Reject</a>
+        </td>
+
+
+      </tr>
+
+      {% endfor %}
+    </tbody>
+  </table>
+
+
+  </div>
+
+{% endblock %}

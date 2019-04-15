@@ -1,0 +1,55 @@
+{% extends 'MasterLayout/baseLayout.html' %}
+
+{% block body %}
+
+  <div class="container">
+    <br>
+
+    <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Request No</th>
+        <th>Equipment</th>
+        <th>Quantity</th>
+        <th>Username</th>
+        <th>Date of Request</th>
+        <th>Date of Approval</th>
+        <th>Expected Return Date</th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+
+      {% for processedRequest in lstProcessedRequest %}
+
+      <tr>
+        <td>{{ processedRequest.reqId }}
+        <td>{{ processedRequest.eqp.eqpName }}</td>
+        <td>{{ processedRequest.quantity }} </td>
+        <td>{{ processedRequest.user.username }}</td>
+        <td>{{ processedRequest.dtOfRequest.date }}</td>
+        <td>{{ processedRequest.dtAvailed.date }}</td>
+        <td>{{ processedRequest.dtOfExpRet.date }}</td>
+
+        <td>
+            {% if processedRequest.reqStatus == 1 %}
+                <a href="#" class="btn btn-success btn-sm" role="button" aria-pressed="true" > Approved </a>
+                <a href="{% url 'sportsEquipment:processReturnRequest' %}?reqId={{ pendingRequest.reqId }}" class="btn btn-primary btn-sm" role="button" aria-pressed="true" > Return</a>
+
+            {% else %}
+                <a href="#" class="btn btn-danger btn-sm" role="button" aria-pressed="true" > Rejected </a>
+            {% endif %}
+        </td>
+
+
+      </tr>
+
+      {% endfor %}
+    </tbody>
+  </table>
+
+
+  </div>
+
+{% endblock %}

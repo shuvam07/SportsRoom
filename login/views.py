@@ -1,6 +1,6 @@
-from django.shortcuts import render
-from login.forms import UserForm,UserProfileInfoForm
-from login.models import UserProfileInfo
+from django.shortcuts import render, redirect
+from Login.forms import UserForm,UserProfileInfoForm
+from Login.models import UserProfileInfo
 
 
 from django.contrib.auth import authenticate,login,logout
@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def index(request):
-    return render(request,'login/index.html')
+    return render(request,'Login/index.html')
 
 @login_required
 def special(request):
@@ -47,7 +47,7 @@ def register(request):
     else:
         user_form = UserForm()
         profile_form = UserProfileInfoForm()
-    return render(request,'login/register.html',{
+    return render(request,'Login/register.html',{
             'user_form':user_form,
             'profile_form':profile_form,
             'registered':registered
@@ -64,7 +64,8 @@ def user_login(request):
         if user:
             if user.is_active:
                 login(request,user)
-                return HttpResponseRedirect(reverse('index'))
+                # return HttpResponseRedirect(reverse('home'))
+                return redirect('/sportsEquipment/home')
             else:
                 return HttpResponse("ACCOUNT NOT ACTIVE")
         else:
@@ -72,4 +73,4 @@ def user_login(request):
             return HttpResponse("Invalid Login Details")
 
     else:
-        return render(request,'login/login.html')
+        return render(request,'Login/Login.html')
