@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from login.forms import UserForm,UserProfileInfoForm
 from login.models import UserProfileInfo
 from datetime import *
+from django.db import transaction
 
 
 from django.contrib.auth import authenticate,login,logout
@@ -17,12 +18,21 @@ from .forms import *
 #method to render home page ater login
 @login_required
 def home(request):
-    return render(request,'home.html')
+    if request.user.is_superuser:
+        totalPenalty = 0
+    else:
+        userProfile = UserProfileInfo.objects.get(user=request.user)
+        totalPenalty = userProfile.totalPenalty
+    return render(request,'home.html',{'totalPenalty': totalPenalty})
 
 #method to perform an insert or update
 @login_required
 def insertOrUpdate(model):
-    model.save()
+    try:
+        with transaction.atomic():
+            model.save()
+    except IntegrityError:
+        handle_exception()
 
 #method to make requests for equipments by students
 @login_required
@@ -35,22 +45,29 @@ def eqpRequest(request):
             myDict = dict(request.POST.items())
             # print(myDict)
             if form.is_valid():
-                user = request.user
-                print(user)
+                user1 = request.user
                 equipmentRequest = EquipmentRequest()
                 currentDateTime = datetime.today()
+                requestedQuantity = request.POST['EqpQuantity']
+                eqp = Equipments.objects.get(eqpId=int(request.POST['EqpName'],10))
                 #Populating equipment request member wise
-                equipmentRequest.quantity       = request.POST['EqpQuantity']
-                equipmentRequest.eqp            = Equipments.objects.get(pk=int(request.POST['EqpName'],10))
-                equipmentRequest.user           = user
-                equipmentRequest.dtOfRequest    = currentDateTime
-                # equipmentRequest.dtAvailed      = datetime.today()
-                # equipmentRequest.dtOfExpRet     = currentDateTime + timedelta(days=7)
-
-                #Saving object to databse
-                insertOrUpdate(equipmentRequest)
-
-                return viewRequest(request);
+                print(requestedQuantity)
+                print(eqp.eqpQuantity - eqp.eqpQuantityTaken)
+                if (int(requestedQuantity) <= (eqp.eqpQuantity - eqp.eqpQuantityTaken)):
+                    eqp.eqpQuantityTaken+=int(requestedQuantity)
+                    insertOrUpdate(eqp)
+                    equipmentRequest.quantity       = requestedQuantity
+                    equipmentRequest.eqp            = eqp
+                    equipmentRequest.user           = user1
+                    equipmentRequest.dtOfRequest    = currentDateTime
+                    equipmentRequest.dtAvailed      = datetime.today()
+                    equipmentRequest.dtOfExpRet     = currentDateTime + timedelta(days=7)
+                    insertOrUpdate(equipmentRequest)
+                    return viewRequest(request)
+                else:
+                    return HttpResponse("Equipment not available")
+               
+                
 
     else:
         # lstEqpmnt = Equipments.objects.all().order_by('eqpName')
@@ -58,6 +75,7 @@ def eqpRequest(request):
         print(form.lstEqpmnt)
         # form.EqpName = choices = [(x.eqpId, x.eqpName) for x in lstEqpmnt]
         return render(request, 'EndUser/eqpRequest.html', {'form' : form});
+    # return home(request);
 
 #method to view request status for equipments by students
 @login_required
@@ -97,7 +115,7 @@ def processRequest(request):
     if(int(isAcceptRequest) == 1):
         pendingRequest.reqStatus    = 1
         pendingRequest.dtAvailed    = currentTime
-        pendingRequest.dtOfExpRet   = currentTime + timedelta(7)
+        pendingRequest.dtOfExpRet   = currentTime + timedelta(days=1)
     else:
         pendingRequest.reqStatus    = 2
         pendingRequest.dtAvailed    = currentTime
@@ -127,4 +145,5 @@ def processReturnRequest(request):
     returnRequest.dtOfActualRet= currentTime
     returnRequest.penalty      = penaltyAmount
     insertOrUpdate(returnRequest)
+    insertOrUpdate(UserProfileInfo)
     return approvedRequest(request)
