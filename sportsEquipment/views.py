@@ -26,15 +26,29 @@ def home(request):
     return render(request,'home.html',{'totalPenalty': totalPenalty})
 
 #method to perform an insert or update
-@login_required
+
 def insertOrUpdate(model):
-    try:
-        with transaction.atomic():
-            model.save()
-    except IntegrityError:
-        handle_exception()
+    model.save()
+    # try:
+    #     with transaction.atomic():
+    #         model.save()
+    # except IntegrityError:
+    #     handle_exception()
 
 #method to make requests for equipments by students
+@login_required
+def checkAvailability(request):
+    print('Hello Sandip')
+    print(request.POST)
+    reqId = request.POST['reqId']
+    print(reqId)
+    penReq = EquipmentRequest.objects.get(reqId=reqId)
+    availability = penReq.eqp.eqpQuantity- penReq.eqp.eqpQuantityTaken
+    print('availability',availability)
+    return HttpResponse(availability)
+    # equipments = Equipments.objects.get(eqpName=penReq.eqp)
+    # print(equipments)
+
 @login_required
 def eqpRequest(request):
     if(request.method == "POST"):
@@ -45,27 +59,22 @@ def eqpRequest(request):
             myDict = dict(request.POST.items())
             # print(myDict)
             if form.is_valid():
-                user1 = request.user
+                user = request.user
                 equipmentRequest = EquipmentRequest()
                 currentDateTime = datetime.today()
                 requestedQuantity = request.POST['EqpQuantity']
-                eqp = Equipments.objects.get(eqpId=int(request.POST['EqpName'],10))
-                #Populating equipment request member wise
-                print(requestedQuantity)
-                print(eqp.eqpQuantity - eqp.eqpQuantityTaken)
-                if (int(requestedQuantity) <= (eqp.eqpQuantity - eqp.eqpQuantityTaken)):
-                    eqp.eqpQuantityTaken+=int(requestedQuantity)
-                    insertOrUpdate(eqp)
-                    equipmentRequest.quantity       = requestedQuantity
-                    equipmentRequest.eqp            = eqp
-                    equipmentRequest.user           = user1
-                    equipmentRequest.dtOfRequest    = currentDateTime
-                    equipmentRequest.dtAvailed      = datetime.today()
-                    equipmentRequest.dtOfExpRet     = currentDateTime + timedelta(days=7)
-                    insertOrUpdate(equipmentRequest)
-                    return viewRequest(request)
-                else:
-                    return HttpResponse("Equipment not available")
+                
+                
+                equipmentRequest.quantity       = requestedQuantity
+                equipmentRequest.eqp            = Equipments.objects.get(pk=int(request.POST['EqpName'],10))
+                equipmentRequest.user           = user
+                equipmentRequest.dtOfRequest    = currentDateTime
+                equipmentRequest.dtAvailed      = datetime.today()
+                equipmentRequest.dtOfExpRet     = currentDateTime + timedelta(days=7)
+                insertOrUpdate(equipmentRequest)
+                return viewRequest(request)
+            else:
+                return HttpResponse("Equipment not available")
                
                 
 
@@ -109,21 +118,30 @@ def processRequest(request):
     print(isAcceptRequest)
     reqId = request.GET.get('reqId')
     print(reqId)
-    pendingRequest = EquipmentRequest.objects.get(reqId=reqId)
-    print(pendingRequest)
+    penReq = EquipmentRequest.objects.get(reqId=reqId)
+    print(penReq.eqp)
     currentTime = datetime.today()
     if(int(isAcceptRequest) == 1):
-        pendingRequest.reqStatus    = 1
-        pendingRequest.dtAvailed    = currentTime
-        pendingRequest.dtOfExpRet   = currentTime + timedelta(days=1)
+        eqp = penReq.eqp
+        requestedQuantity = penReq.quantity
+        print(requestedQuantity)
+        print(eqp.eqpQuantity - eqp.eqpQuantityTaken)
+        if(requestedQuantity <= (eqp.eqpQuantity - eqp.eqpQuantityTaken)) :    
+            penReq.reqStatus    = 1
+            penReq.dtAvailed    = currentTime
+            penReq.dtOfExpRet   = currentTime + timedelta(days=1)
+            eqp.eqpQuantityTaken += requestedQuantity
+            insertOrUpdate(eqp)
+        else :
+            return HttpResponse("Equipment not available")
     else:
-        pendingRequest.reqStatus    = 2
-        pendingRequest.dtAvailed    = currentTime
-        pendingRequest.dtOfExpRet   = currentTime
-        pendingRequest.dtOfActualRet= currentTime
+        penReq.reqStatus    = 2
+        penReq.dtAvailed    = currentTime
+        penReq.dtOfExpRet   = currentTime
+        penReq.dtOfActualRet= currentTime
 
-    insertOrUpdate(pendingRequest)
-    return home(request)
+    insertOrUpdate(penReq)
+    return pendingRequest(request)
 
 #method to process return request by the sports room admin
 @login_required
@@ -139,11 +157,12 @@ def processReturnRequest(request):
     penaltyAmount = 0
     if (delta.days > 0):
         penaltyAmount = dailyPenalty * delta.days
-
-
+    eqp = returnRequest.eqp
+    eqp.eqpQuantityTaken -= returnRequest.quantity
     returnRequest.reqStatus    = 3
     returnRequest.dtOfActualRet= currentTime
     returnRequest.penalty      = penaltyAmount
     insertOrUpdate(returnRequest)
-    insertOrUpdate(UserProfileInfo)
+    insertOrUpdate(eqp)
+    # insertOrUpdate(UserProfileInfo)
     return approvedRequest(request)
