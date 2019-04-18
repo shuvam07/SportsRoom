@@ -13,6 +13,7 @@
         <th>Quantity</th>
         <th>Username</th>
         <th>Date of Request</th>
+
         <th></th>
       </tr>
     </thead>
@@ -27,7 +28,16 @@
         <td>{{ pendingRequest.quantity }} </td>
         <td>{{ pendingRequest.user.username }}</td>
         <td>{{ pendingRequest.dtOfRequest.date }}</td>
-
+        <td>
+          <!-- {% if availability %}
+            <div>availability</div>
+          {% else %} -->
+          <form>
+            {% csrf_token %}
+             <a onClick="checkAvailability(this.id)" id={{ pendingRequest.reqId }} role="button" aria-pressed="true"><input value="Check Availability" class="btn btn-primary" id='here' readonly></input></a>
+          </form>   
+          <!-- {% endif %} -->
+        </td>
         <td>
             <a href="{% url 'sportsEquipment:processRequest' %}?reqId={{ pendingRequest.reqId }}&isAcceptRequest=1" class="btn btn-success btn-sm" role="button" aria-pressed="true" > Approve</a>
             <a href="{% url 'sportsEquipment:processRequest' %}?reqId={{ pendingRequest.reqId }}&isAcceptRequest=0" class="btn btn-danger btn-sm" role="button" aria-pressed="true" > Reject</a>

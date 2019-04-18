@@ -7,6 +7,7 @@ class Equipments(models.Model):
     eqpId       = models.AutoField(primary_key=True)
     eqpName     = models.CharField(max_length=50)
     eqpQuantity = models.IntegerField(validators=[MinValueValidator(1)])
+    eqpQuantityTaken = models.IntegerField(default=0,validators=[MaxValueValidator(eqpQuantity)])
 
     def __str__(self):
         return str(self.eqpId)+"@"+self.eqpName+"_"+str(self.eqpQuantity)
