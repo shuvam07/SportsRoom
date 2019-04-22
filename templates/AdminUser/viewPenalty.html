@@ -1,0 +1,66 @@
+{% extends 'MasterLayout/baseLayout.html' %}
+
+{% block body %}
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+    $(document).ready(function(){
+      $("#myInput").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#myTable tr").filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+      });
+    });
+    </script>
+
+
+
+
+
+
+  <div class="container">
+    <br>
+
+
+    <h2>Check Penalty</h2>
+    <p>Type UserName in the input field to search the List</p>  
+    <input id="myInput" type="text" placeholder="Search..">
+    <br><br>
+
+
+    <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>User</th>
+        <th>TotalPenalty</th>
+        <th>website</th>
+        <th>ProfilePic</th>
+    
+        
+      </tr>
+    </thead>
+
+    <tbody id="myTable">
+
+      {% for request in context %}
+
+      <tr>
+        <td>{{ request.user }}</td>
+        <td>{{ request.totalPenalty }}</td>
+        <td>{{ request.website }} </td>
+        <td><img src="{{ request.profile_pic }}" class="responsive-img" style="max-height:300px" alt="face"></td>
+               
+
+
+      </tr>
+
+      {% endfor %}
+
+    </tbody>
+  </table>
+
+
+  </div>
+
+{% endblock %}

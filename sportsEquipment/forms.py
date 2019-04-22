@@ -1,5 +1,6 @@
 from django import forms
 from .models import *
+from login.models import UserProfileInfo
 class EqpmntRequestForm(forms.Form):
     lstEqpmnt = Equipments.objects.all().order_by('eqpName')
     #print(lstEqpmnt)
@@ -8,3 +9,25 @@ class EqpmntRequestForm(forms.Form):
     # class Meta:
     #     model = Equipments
     #     fields = {'eqpName','eqpQuantity'}
+
+
+class addEqpForm(forms.ModelForm):
+	class Meta:
+		model = Equipments
+		fields = [
+				'eqpName'   ,
+				'eqpQuantity'
+		]
+    #EqpName = forms.CharField(label='eqp name', max_length=100)
+    #EqpQuantity = forms.IntegerField(min_value=1)
+
+
+
+class editForm(forms.ModelForm):
+	class Meta:
+		model = Equipments
+		fields = [
+			'eqpName',
+			'eqpQuantity'
+		]
+

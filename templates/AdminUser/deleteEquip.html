@@ -1,0 +1,23 @@
+{% extends 'MasterLayout/baseLayout.html' %}
+
+{% block body %}
+
+  <div class="container">
+    <form action='.' method="POST">{% csrf_token %}
+    	<h3> Item Deleted!!<h3>
+    	<div>
+    		
+            <a href="{% url 'sportsEquipment:viewEquipList' %}" class="btn btn-primary btn-sm" role="button" aria-pressed="true" > OK</a>
+
+    	</div>
+      
+  </form>
+  </div>
+
+{% endblock %}
+
+
+
+<!-- <input onClick="delete(this.id)" id={{ object.eqpId }} role="button" value='Yes'/> 
+<input   id='btnDelete'></input>
+<a href= '../..'>Cancel</a> -->

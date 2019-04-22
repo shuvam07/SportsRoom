@@ -1,0 +1,116 @@
+{% extends 'MasterLayout/baseLayout.html' %}
+
+{% block body %}
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+    $(document).ready(function(){
+      $("#myInput").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#myTable tr").filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+      });
+    });
+    </script>
+
+
+
+
+
+
+  <div class="container">
+    <br>
+
+
+    <h2>Search Equipment</h2>
+    <p>Type EqpName in the input field to search the List</p>  
+    <input id="myInput" type="text" placeholder="Search..">
+    <br><br>
+
+
+    <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>EqpID</th>
+        <th>EqpName</th>
+        <th>EqpQuantity</th>
+        <th>Edit</th>
+        <th>Delete</th>
+        <!--<th>Username</th>
+        <th>Date of Request</th>
+        <th>Date of Approval</th>
+        <th>Expected Return Date</th>
+        <th>Actual Return Date</th>
+        <th>Penalty Levied</th>
+        <th></th>-->
+      </tr>
+    </thead>
+
+    <tbody id="myTable">
+
+      {% for request in context %}
+
+      <tr>
+        <td>{{ request.eqpId }}</td>
+        <td>{{ request.eqpName }}</td>
+        <td>{{ request.eqpQuantity }} </td>
+        <td><a href="{% url 'sportsEquipment:editEquipList' request.eqpId %}" class="btn btn-info btn-sm" role="button">Edit</a></td>
+        <td><a href="{% url 'sportsEquipment:deleteEqp' request.eqpId %}" class="btn btn-danger btn-sm" role="button">Delete</a></td>
+        <!--<td>{{ request.user.username }}</td>
+        <td>{{ request.dtOfRequest.date }}</td>
+        <td>
+            {% if request.dtAvailed.date == None %}
+                NA
+            {% else %}
+                {{ request.dtAvailed.date }}
+            {% endif %}
+        </td>
+        <td>
+            {% if request.dtAvailed.date == None %}
+                NA
+            {% else %}
+                {{ request.dtOfExpRet.date }}
+            {% endif %}
+        </td>
+        <td>{% if request.dtAvailed.date == None %}
+                NA
+            {% else %}
+                {{ request.dtOfActualRet.date }}
+            {% endif %}
+        </td>
+        <td>{% if request.dtAvailed.date == None %}
+                NA
+            {% else %}
+                {{ request.penalty }}
+            {% endif %}
+        </td>
+
+        <td>
+            {% if request.reqStatus == 0 %}
+                <a href="#" class="btn btn-warning btn-sm" role="button" aria-pressed="true" > Pending </a>
+
+            {% elif request.reqStatus == 1 %}
+                <a href="#" class="btn btn-success btn-sm" role="button" aria-pressed="true" > Approved </a>
+
+            {% elif request.reqStatus == 2 %}
+                <a href="#" class="btn btn-danger btn-sm" role="button" aria-pressed="true" > Rejected </a>
+
+            {% else %}
+                <a href="#" class="btn btn-primary btn-sm" role="button" aria-pressed="true" > Item Returned </a>
+
+            {% endif %}
+        </td>-->
+
+
+      </tr>
+
+      {% endfor %}
+
+    </tbody>
+  </table>
+
+
+  </div>
+
+{% endblock %}

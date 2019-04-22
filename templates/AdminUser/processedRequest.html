@@ -1,9 +1,25 @@
 {% extends 'MasterLayout/baseLayout.html' %}
 
 {% block body %}
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+    $(document).ready(function(){
+      $("#myInput").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#myTable tr").filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+      });
+    });
+    </script>
+
 
   <div class="container">
     <br>
+    <h2>Search Request</h2>
+    <p>Type key words in the input field to search the List</p>  
+    <input id="myInput" type="text" placeholder="Search..">
+    <br><br>
 
     <table class="table table-hover">
     <thead>
@@ -19,7 +35,7 @@
       </tr>
     </thead>
 
-    <tbody>
+    <tbody id="myTable">
 
       {% for processedRequest in lstProcessedRequest %}
 

@@ -3,7 +3,7 @@ from login.forms import UserForm,UserProfileInfoForm
 from login.models import UserProfileInfo
 from datetime import *
 from django.db import transaction
-
+from django.shortcuts import render, get_object_or_404
 
 from django.contrib.auth import authenticate,login,logout
 from django.http import HttpResponseRedirect, HttpResponse
@@ -12,6 +12,9 @@ from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from .models import *
 from .forms import *
+from django.views import generic
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+#from django.core.urlresolvers import reverse_lazy
 
 # Create your views here.
 
@@ -36,9 +39,12 @@ def insertOrUpdate(model):
     #     handle_exception()
 
 #method to make requests for equipments by students
+
+#method to make requests for equipments by students
+
 @login_required
 def checkAvailability(request):
-    print('Hello Sandip')
+    print('Hello bosana')
     print(request.POST)
     reqId = request.POST['reqId']
     print(reqId)
@@ -86,6 +92,89 @@ def eqpRequest(request):
         return render(request, 'EndUser/eqpRequest.html', {'form' : form});
     # return home(request);
 
+#method to add equiment by admin
+@login_required
+def addEquip(request):
+    if(request.method=="POST"):
+        form = addEqpForm(request.POST)
+        if form.is_valid():
+            form.save()
+        return viewInventory(request)
+    else:
+        form = addEqpForm()
+        context ={
+            'form' : form
+        }
+        return render(request, "AdminUser/addEquip.html",context)
+
+
+
+#method to check penalty of users
+@login_required
+def penalty(request):
+    context = list(UserProfileInfo.objects.order_by('totalPenalty'))
+    print(context)
+    #print("No of requests: ", len(context))
+    return render(request, 'AdminUser/viewPenalty.html', {'context': context});
+    #return render(request, "AdminUser/viewPenalty.html")
+    # print("Check penalty is working!!")
+    # return viewInventory(request)
+    # if(request.method=="POST"):
+    #     form = penaltyForm(request.POST)
+    #     if form.is_valid():
+    #         form.save()
+    #         #viewPenalty(request)
+    #         userProfile = UserProfileInfo.objects.get(user=request.user)
+    #         totalPenalty = userProfile.totalPenalty
+    #         print(totalPenalty)
+    #         print("form is valid!!")
+    #         return render(request, "AdminUser/viewPenalty.html")
+    #     else:
+    #         print("form invalid!")
+    #         return render(request, "AdminUser/viewPenalty.html")
+    # else:
+    #     form = penaltyForm()
+    #     context ={
+    #         'form' : form
+    #     }
+    #     #SSviewPenalty(request)
+    #     print("Method is not post!!!")
+    #     return render(request, "AdminUser/checkPenalty.html",context)
+
+
+#method to edit equipment list by Admin
+@login_required
+def editEquipList(request,pk):
+    
+    item = get_object_or_404(Equipments,eqpId = pk)
+
+    if request.method == "POST":
+        form = editForm(request.POST, instance=item)
+        if form.is_valid():
+            form.save()
+            # return render(request,'AdminUser/editEquipList.html',{'form':form})
+            return viewInventory(request)
+
+    else:
+        form = editForm(instance = item)
+        return render(request,'AdminUser/editEquipList.html',{'form':form})
+
+
+
+
+#method to delete a equip
+#@login_required
+def deleteEqp(request,pk):
+    Equipments.objects.filter(eqpId=pk).delete()
+    items = Equipments.objects.all()
+    print (items)
+    context = {
+        'items' : items
+    }
+    return render(request,'AdminUser/deleteEquip.html',context)
+    #return redirect('AdminUser/viewEquipList.html')
+
+
 #method to view request status for equipments by students
 @login_required
 def viewRequest(request):
@@ -95,6 +184,18 @@ def viewRequest(request):
     print(lstRequest)
     print("No of requests: ", len(lstRequest))
     return render(request, 'EndUser/viewRequest.html', {'lstRequest': lstRequest});
+
+
+
+#method to view inventory
+@login_required
+def viewInventory(request):
+    #user = request.user
+    #print(user)
+    context = list(Equipments.objects.order_by('-eqpId'))
+    print(context)
+    #print("No of requests: ", len(context))
+    return render(request, 'AdminUser/viewEquipList.html', {'context': context});
 
 
 #method to view all pending requests to be processed by the sports room admin
