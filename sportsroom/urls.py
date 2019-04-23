@@ -17,6 +17,14 @@ from django.contrib import admin
 from django.urls import path,include
 from django.contrib.auth import views as auth_views
 from login import views
+from django.conf.urls import url, include
+from django.contrib import admin
+
+from django.conf import settings
+from django.conf.urls.static import static
+
+
+
 
 urlpatterns = [
     path('',views.index,name='index'),
@@ -32,4 +40,4 @@ urlpatterns = [
     # path("password-reset/complete/",auth_views.password_reset_complete,name="password_reset_complete"),
 
     path('',include('django.contrib.auth.urls')),
-]
+] + static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
