@@ -31,3 +31,11 @@ class EquipmentRequest(models.Model):
     )
     reqStatus       =   models.IntegerField(default=0,choices=choices)
     # remarks         =   models.CharField(null=True, default='')
+
+class addEquipments(models.Model):
+    eqpId       = models.AutoField(primary_key=True)
+    eqpName     = models.CharField(max_length=50)
+    eqpQuantity = models.IntegerField(validators=[MinValueValidator(1)])
+
+    def __str__(self):
+        return str(self.eqpId)+"@"+self.eqpName+"_"+str(self.eqpQuantity)

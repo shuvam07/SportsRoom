@@ -8,9 +8,13 @@
     <link rel="stylesheet" href="{% static '/css/style.css'%}">
     <link rel="stylesheet" href="{% static '/css/bootstrap.min.css'%}">
     <script src="{% static 'sportsEquipment/detail.js' %}"></script>
+    <script src="{% static 'sportsEquipment/delete.js' %}"></script>
     <body>
         <nav class="navbar navbar-expand navbar-dark bg-dark">
-          <a class="navbar-brand" href="{% url 'sportsEquipment:home' %}">Sportsroom@IIITB</a>
+          <img src="/media/profile_pics/IIIT-B_logo copy.jpg" style="max-height:50px" />
+          <a class="navbar-brand" href="{% url 'sportsEquipment:home' %}">Sportsroom<br>IIITB</a>
+          
+          
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample02" aria-controls="navbarsExample02" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -26,10 +30,21 @@
               <li class="nav-item active">
                 <a class="nav-link" href="{% url 'sportsEquipment:approvedRequest' %}">Processed Request <span class="sr-only">(current)</span></a>
               </li>
+
+              <li class="nav-item active">
+                <a class="nav-link" href="{% url 'sportsEquipment:addEquip' %}">Add Equipment <span class="sr-only">(current)</span></a>
+              </li>
+
+              <li class="nav-item active">
+                <a class="nav-link" href="{% url 'sportsEquipment:viewEquipList' %}">View Equipment <span class="sr-only">(current)</span></a>
+              </li>
               <!--<li class="nav-item">-->
               <!--<li class="nav-item active">-->
                 <!--<a class="nav-link" href="#">View requests <span class="sr-only">(current)</span></a>-->
               <!--</li>-->
+              <li class="nav-item active">
+                <a class="nav-link" href="{% url 'sportsEquipment:penalty' %}">Check Penalty <span class="sr-only">(current)</span></a>
+              </li>
 
             </ul>
             {% else %}
@@ -53,11 +68,17 @@
                   <li class="nav-item">
                     <li class="nav-link ">
                         <font color="white">Hello, {{ user.username }}</font>
+                        
+
                   {% if user.is_authenticated %}
                   <li class="nav-item"><a class="nav-link" href="{% url 'login:logout' %}">Logout</a></li>
                     {% else %}
                   <li class="nav-item"><a class="nav-link" href="{% url 'login:user_login' %}">Login</a></li>
                     {% endif %}
+                  <li class="nav-link">
+                    {{ user }}
+                    <img src="/media/{{ profile_pic }}" style="max-height:100px" alt="{{user}}"/>
+                  </li>
                     </li>
                   </li>
 

@@ -13,4 +13,10 @@ urlpatterns = [
     path(r'processRequest/',views.processRequest,name='processRequest'),
     path(r'processReturnRequest/',views.processReturnRequest,name='processReturnRequest'),
     path(r'viewRequest/',views.viewRequest,name='viewRequest'),
+    path(r'addEquip/',views.addEquip,name='addEquip'),
+    path(r'viewEquipList/',views.viewInventory,name='viewEquipList'),
+    path(r'editEquipList/(?P<pk>\d+)',views.editEquipList,name='editEquipList'),
+    path(r'deleteEqp/(?P<pk>\d+)',views.deleteEqp,name='deleteEqp'),
+    path(r'penalty/',views.penalty,name='penalty'),
+
 ]
