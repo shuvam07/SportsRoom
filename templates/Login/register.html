@@ -5,6 +5,7 @@
   {% if registered %}
     <h1>Thank You for Registering</h1>
   {% else %}
+  <p style="color:red">{{ error }}</p>
     <h1>Register Here!!</h1>
     <form class="" method="post" enctype="multipart/form-data">
       {% csrf_token %}

@@ -34,7 +34,7 @@
           {% else %} -->
           <form>
             {% csrf_token %}
-             <a onClick="checkAvailability(this.id)" id={{ pendingRequest.reqId }} role="button" aria-pressed="true"><input value="Check Availability" class="btn btn-primary" id='here' readonly></input></a>
+             <a onClick="checkAvailability(this.id)" id={{ pendingRequest.reqId }} role="button" aria-pressed="true"><input value="Check Availability" class="btn btn-primary" id={{ pendingRequest.reqId }} readonly></input></a>
           </form>   
           <!-- {% endif %} -->
         </td>

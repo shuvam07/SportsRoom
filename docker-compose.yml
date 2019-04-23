@@ -7,5 +7,5 @@ services:
     container_name: SportsRoom
     volumes:
       - .:/SportsRoom
-    expose:
-      - "8000"
+    ports:
+      - "8000:8000"

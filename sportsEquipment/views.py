@@ -26,7 +26,7 @@ def home(request):
     else:
         userProfile = UserProfileInfo.objects.get(user=request.user)
         totalPenalty = userProfile.totalPenalty
-    return render(request,'home.html',{'totalPenalty': totalPenalty})
+    return render(request,'home.html',{'userProfile': userProfile})
 
 #method to perform an insert or update
 
@@ -44,13 +44,16 @@ def insertOrUpdate(model):
 
 @login_required
 def checkAvailability(request):
-    print('Hello bosana')
     print(request.POST)
     reqId = request.POST['reqId']
     print(reqId)
     penReq = EquipmentRequest.objects.get(reqId=reqId)
     availability = penReq.eqp.eqpQuantity- penReq.eqp.eqpQuantityTaken
     print('availability',availability)
+    # data = {
+    #     'availability' : availability,
+    #     'id' : reqId
+    # }
     return HttpResponse(availability)
     # equipments = Equipments.objects.get(eqpName=penReq.eqp)
     # print(equipments)
@@ -78,7 +81,7 @@ def eqpRequest(request):
                 equipmentRequest.dtAvailed      = datetime.today()
                 equipmentRequest.dtOfExpRet     = currentDateTime + timedelta(days=7)
                 insertOrUpdate(equipmentRequest)
-                return viewRequest(request)
+                return redirect(reverse('sportsEquipment:viewRequest'))
             else:
                 return HttpResponse("Equipment not available")
                
@@ -193,6 +196,8 @@ def viewInventory(request):
     #user = request.user
     #print(user)
     context = list(Equipments.objects.order_by('-eqpId'))
+    for req in context:
+        req.eqpQuantityTaken = req.eqpQuantity - req.eqpQuantityTaken
     print(context)
     #print("No of requests: ", len(context))
     return render(request, 'AdminUser/viewEquipList.html', {'context': context});
