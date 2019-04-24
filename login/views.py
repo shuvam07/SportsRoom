@@ -68,8 +68,8 @@ def user_login(request):
         password = request.POST.get('password')
 
         user = authenticate(username=username,password=password)
-        userprofile = UserProfileInfo.objects.get(user=user)
-        print (userprofile.profile_pic)
+        # userprofile = UserProfileInfo.objects.get(user=user)
+        # print (userprofile.profile_pic)
         if user:
             if user.is_active:
                 login(request,user)

@@ -21,10 +21,10 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 #method to render home page ater login
 @login_required
 def home(request):
+    userProfile = UserProfileInfo.objects.get(user=request.user)
     if request.user.is_superuser:
         totalPenalty = 0
     else:
-        userProfile = UserProfileInfo.objects.get(user=request.user)
         totalPenalty = userProfile.totalPenalty
     return render(request,'home.html',{'userProfile': userProfile})
 
