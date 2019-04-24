@@ -65,6 +65,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                # 'sportsEquipment.context_processors.get_data',
             ],
         },
     },
@@ -137,3 +138,4 @@ EMAIL_HOST_PASSWORD = 'abc'
 
 DAILY_PENALTY = 5
 RETURN_PERIOD = 1
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True

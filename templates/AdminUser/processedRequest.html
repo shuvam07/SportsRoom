@@ -14,7 +14,7 @@
     </script>
 
 
-  <div class="container">
+  <div class="container" style="font-size: 14px">
     <br>
     <h2>Search Request</h2>
     <p>Type key words in the input field to search the List</p>  
@@ -50,14 +50,14 @@
 
         <td>
             {% if processedRequest.reqStatus == 1 %}
-                <a href="#" class="btn btn-success btn-sm" role="button" aria-pressed="true" > Approved </a>
+                <a href="#" class="btn btn-success btn-sm" role="button" aria-pressed="true" style="font-size: 14px"> Approved </a>
                 <a href="{% url 'sportsEquipment:processReturnRequest' %}?reqId={{ processedRequest.reqId }}" class="btn btn-primary btn-sm" role="button" aria-pressed="true" > Return</a>
 
             {% elif processedRequest.reqStatus == 2%}
-                <a href="#" class="btn btn-danger btn-sm" role="button" aria-pressed="true" > Rejected </a>
+                <a href="#" class="btn btn-danger btn-sm" role="button" aria-pressed="true" style="font-size: 14px"> Rejected </a>
 
             {% else %}
-                <a href="#" class="btn btn-secondary btn-sm" role="button" aria-pressed="true" > Returned </a>
+                <a href="#" class="btn btn-secondary btn-sm" role="button" aria-pressed="true" style="font-size: 14px"> Returned </a>
             {% endif %}
         </td>
 

@@ -21,10 +21,8 @@
     <script src="{% static 'sportsEquipment/delete.js' %}"></script>
     <body>
         <nav class="navbar navbar-expand navbar-dark bg-dark">
-          <img src="/media/profile_pics/IIIT-B_logo copy.jpg" style="max-height:50px" />
-          <a class="navbar-brand" href="{% url 'sportsEquipment:home' %}">Sportsroom<br>IIITB</a>
-          
-          
+          <img src="/media/profile_pics/IIIT-B_logo copy.jpg" style="max-height:50px"/>
+          <a class="navbar-brand nav-link" href="{% url 'sportsEquipment:home' %}" style="font-size:14px">Sportsroom<br>IIITB</a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample02" aria-controls="navbarsExample02" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -32,7 +30,7 @@
           <div class="collapse navbar-collapse" id="navbarsExample02">
 
             {% if user.is_superuser %}
-              <ul class="navbar-nav mr-auto">
+              <ul class="navbar-nav " style="margin-right: 900px">
               <li class="nav-item active">
                 <a class="nav-link" href="{% url 'sportsEquipment:pendingRequest' %}">Pending Request <span class="sr-only">(current)</span></a>
               </li>
@@ -58,7 +56,7 @@
 
             </ul>
             {% else %}
-              <ul class="navbar-nav mr-auto">
+              <ul class="navbar-nav " style="margin-right: 1000px" >
               <li class="nav-item active">
                 <a class="nav-link" href="{% url 'sportsEquipment:eqpRequest' %}">Request Equipment <span class="sr-only">(current)</span></a>
               </li>
@@ -74,7 +72,7 @@
             {% endif %}
 
 
-              
+            
 
                 <div class ="profImg">     
                     <img  src="/media/{{ userProfile.profile_pic }}" style="width:50px" alt="{{ user }}"/>
@@ -87,15 +85,15 @@
                       {% endif %}
    -->
                     
-                    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"></button>
+                    <button class="btn dropdown-toggle" type="button" data-toggle="dropdown" style="color: white"></button>
                     <!-- <span class="caret"></span></button> -->
                     <ul class="dropdown-menu">
                     {% if user.is_authenticated %}
                       <li><a class="nav-link" href="{% url 'login:logout' %}">Logout</a></li>
-                      <li><a href="#">Hello, {{ user.username }}</a></li>
+                      <li><a class="nav-link" href="#">Hello, {{ user.username }}</a></li>
                     {% else %}
                       <li><a class="nav-link" href="{% url 'login:user_login' %}">Login</a></li>
-                      <li><a href="#">Hello, {{ user.username }}</a></li>
+                      <li><a class="nav-link" href="#">Hello, {{ user.username }}</a></li>
                     {% endif %}
                     </ul>
                   </div>
