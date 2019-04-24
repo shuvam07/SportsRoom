@@ -14,7 +14,11 @@ echo "Removing current instance of SportsRoom..."
 docker container rm sportsroom
 fi
 
+#Pulling image from docker hub
+docker pull rahul535/sportsroom
+
+
 # start a new container instance
-echo "Starting SportsRoom using rundeck"
+echo "Starting SportsRoom...."
 # docker-compose
 docker run -d -p 8000:8000 --name sportsroom sportsroom  
