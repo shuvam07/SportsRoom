@@ -6,7 +6,6 @@ from django import forms
 from django.contrib.auth import authenticate,login,logout
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse    
-from django.shortcuts import render_to_response
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
