@@ -21,4 +21,4 @@ docker pull rahul535/sportsroom
 # start a new container instance
 echo "Starting SportsRoom...."
 # docker-compose
-docker run -d -p 8000:8000 --name sportsroom sportsroom  
+docker run -d -p 8000:8000 --name sportsroom rahul535/sportsroom  
