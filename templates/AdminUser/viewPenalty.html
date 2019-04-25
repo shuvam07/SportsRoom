@@ -1,5 +1,33 @@
 {% extends 'MasterLayout/baseLayout.html' %}
 <%from django.conf.settings import MEDIA_URL%>
+
+{% block rightbar %}
+
+              <div class ="profImg">     
+                    <img  src="/media/{{ userProfile.profile_pic }}" style="width:50px" alt="{{ user }}"/>
+                    {% if user.is_authenticated %}
+                    </div> 
+                    <div class="dropdown">
+                    <!-- <a class="nav-link" href="{% url 'login:logout' %}">Logout</a>
+                      {% else %}
+                    <a class="nav-link" href="{% url 'login:user_login' %}">Login</a>
+                      {% endif %}
+   -->
+                    
+                    <button class="btn dropdown-toggle" type="button" data-toggle="dropdown" style="color: white"></button>
+                    <!-- <span class="caret"></span></button> -->
+                    <ul class="dropdown-menu">
+                    {% if user.is_authenticated %}
+                      <li><a class="nav-link" href="{% url 'login:logout' %}">Logout</a></li>
+                      <li><a class="nav-link" href="#">Hello, {{ user.username }}</a></li>
+                    {% else %}
+                      <li><a class="nav-link" href="{% url 'login:user_login' %}">Login</a></li>
+                      <li><a class="nav-link" href="#">Hello, {{ user.username }}</a></li>
+                    {% endif %}
+                    </ul>
+</div>
+            {%  endblock%}
+            
 {% block body %}
     
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
