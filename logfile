@@ -1,0 +1,53 @@
+[25/Apr/2019 03:03:28] INFO [django.utils.autoreload:578] Watching for file changes with StatReloader autoreload.py
+[25/Apr/2019 03:03:47] INFO [django.server:154] "GET / HTTP/1.1" 200 3479 basehttp.py
+[25/Apr/2019 03:03:47] INFO [django.server:154] "GET /static/css/style.css HTTP/1.1" 304 0 basehttp.py
+[25/Apr/2019 03:03:47] INFO [django.server:154] "GET /media/profile_pics/IIIT-B_logo%20copy.jpg HTTP/1.1" 304 0 basehttp.py
+[25/Apr/2019 03:03:47] INFO [django.server:154] "GET /media/images/2.png HTTP/1.1" 304 0 basehttp.py
+[25/Apr/2019 03:03:47] INFO [django.server:154] "GET /media/images/3.jpg HTTP/1.1" 304 0 basehttp.py
+[25/Apr/2019 03:03:47] INFO [django.server:154] "GET /media/images/4.jpeg HTTP/1.1" 304 0 basehttp.py
+[25/Apr/2019 03:03:56] INFO [django.server:154] "GET /login/user_login/ HTTP/1.1" 200 2606 basehttp.py
+[25/Apr/2019 03:04:00] INFO [django.server:154] "POST /login/user_login/ HTTP/1.1" 302 0 basehttp.py
+[25/Apr/2019 03:04:00] INFO [django.server:154] "GET /sportsEquipment/home HTTP/1.1" 301 0 basehttp.py
+[25/Apr/2019 03:04:00] INFO [django.server:154] "GET /sportsEquipment/home/ HTTP/1.1" 200 5109 basehttp.py
+[25/Apr/2019 03:04:00] INFO [django.server:154] "GET /static/css/bootstrap.min.css HTTP/1.1" 304 0 basehttp.py
+[25/Apr/2019 03:04:00] INFO [django.server:154] "GET /static/sportsEquipment/delete.js HTTP/1.1" 200 412 basehttp.py
+[25/Apr/2019 03:04:00] INFO [django.server:154] "GET /media/profile_pics/IMG_20190206_143340_copy_2_wz0Bmid.jpg HTTP/1.1" 304 0 basehttp.py
+[25/Apr/2019 03:04:00] INFO [django.server:154] "GET /static/sportsEquipment/detail.js HTTP/1.1" 200 446 basehttp.py
+[25/Apr/2019 03:04:03] INFO [django.server:154] "GET /sportsEquipment/pendingRequest/ HTTP/1.1" 200 5344 basehttp.py
+[25/Apr/2019 03:04:03] INFO [django.server:154] "GET /static/sportsEquipment/delete.js HTTP/1.1" 304 0 basehttp.py
+[25/Apr/2019 03:04:03] WARNING [django.request:228] Not Found: /media/ log.py
+[25/Apr/2019 03:04:03] WARNING [django.request:228] Not Found: /media/ log.py
+[25/Apr/2019 03:04:03] WARNING [django.server:154] "GET /media/ HTTP/1.1" 404 1733 basehttp.py
+[25/Apr/2019 03:04:05] INFO [django.server:154] "GET /sportsEquipment/approvedRequest/ HTTP/1.1" 200 14049 basehttp.py
+[25/Apr/2019 03:04:05] WARNING [django.request:228] Not Found: /media/ log.py
+[25/Apr/2019 03:04:05] WARNING [django.request:228] Not Found: /media/ log.py
+[25/Apr/2019 03:04:05] WARNING [django.server:154] "GET /media/ HTTP/1.1" 404 1733 basehttp.py
+[25/Apr/2019 03:04:05] WARNING [django.request:228] Not Found: /media/ log.py
+[25/Apr/2019 03:04:05] WARNING [django.request:228] Not Found: /media/ log.py
+[25/Apr/2019 03:04:05] WARNING [django.server:154] "GET /media/ HTTP/1.1" 404 1733 basehttp.py
+[25/Apr/2019 03:04:09] INFO [django.server:154] "GET /sportsEquipment/addEquip/ HTTP/1.1" 200 5535 basehttp.py
+[25/Apr/2019 03:04:09] WARNING [django.request:228] Not Found: /media/ log.py
+[25/Apr/2019 03:04:09] WARNING [django.request:228] Not Found: /media/ log.py
+[25/Apr/2019 03:04:09] WARNING [django.server:154] "GET /media/ HTTP/1.1" 404 1733 basehttp.py
+[25/Apr/2019 03:04:09] WARNING [django.request:228] Not Found: /media/ log.py
+[25/Apr/2019 03:04:09] WARNING [django.request:228] Not Found: /media/ log.py
+[25/Apr/2019 03:04:09] WARNING [django.server:154] "GET /media/ HTTP/1.1" 404 1733 basehttp.py
+[25/Apr/2019 03:04:11] INFO [django.server:154] "GET /sportsEquipment/viewEquipList/ HTTP/1.1" 200 14271 basehttp.py
+[25/Apr/2019 03:04:11] WARNING [django.request:228] Not Found: /media/ log.py
+[25/Apr/2019 03:04:11] WARNING [django.request:228] Not Found: /media/ log.py
+[25/Apr/2019 03:04:11] WARNING [django.server:154] "GET /media/ HTTP/1.1" 404 1733 basehttp.py
+[25/Apr/2019 03:04:11] WARNING [django.request:228] Not Found: /media/ log.py
+[25/Apr/2019 03:04:11] WARNING [django.request:228] Not Found: /media/ log.py
+[25/Apr/2019 03:04:11] WARNING [django.server:154] "GET /media/ HTTP/1.1" 404 1733 basehttp.py
+[25/Apr/2019 03:04:12] INFO [django.server:154] "GET /sportsEquipment/penalty/ HTTP/1.1" 200 7865 basehttp.py
+[25/Apr/2019 03:04:12] WARNING [django.request:228] Not Found: /media/ log.py
+[25/Apr/2019 03:04:12] WARNING [django.request:228] Not Found: /media/ log.py
+[25/Apr/2019 03:04:12] WARNING [django.server:154] "GET /media/ HTTP/1.1" 404 1733 basehttp.py
+[25/Apr/2019 03:04:12] INFO [django.server:154] "GET /media/profile_pics/index.jpeg HTTP/1.1" 200 8983 basehttp.py
+[25/Apr/2019 03:04:12] INFO [django.server:154] "GET /media/profile_pics/index_nOERfe6.jpeg HTTP/1.1" 200 8983 basehttp.py
+[25/Apr/2019 03:04:12] INFO [django.server:154] "GET /media/profile_pics/00100dPORTRAIT_00100_BURST20180305124127434_COVER_qYYH8WW.jpg HTTP/1.1" 304 0 basehttp.py
+[25/Apr/2019 03:04:12] INFO [django.server:154] "GET /media/profile_pics/IMG_20190206_143340_copy_2_BSSkJyV.jpg HTTP/1.1" 304 0 basehttp.py
+[25/Apr/2019 03:04:12] WARNING [django.request:228] Not Found: /media/ log.py
+[25/Apr/2019 03:04:12] WARNING [django.request:228] Not Found: /media/ log.py
+[25/Apr/2019 03:04:12] WARNING [django.server:154] "GET /media/ HTTP/1.1" 404 1733 basehttp.py
+[25/Apr/2019 03:04:12] INFO [django.server:154] "GET /media/profile_pics/index_gDew1B5.jpeg HTTP/1.1" 200 8983 basehttp.py
