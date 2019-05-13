@@ -4,7 +4,7 @@ from login.models import UserProfileInfo
 from datetime import *
 from django.db import transaction
 from django.shortcuts import render, get_object_or_404
-
+from pytz import timezone
 from django.contrib.auth import authenticate,login,logout
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
@@ -23,10 +23,9 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 def home(request):
     userProfile = UserProfileInfo.objects.get(user=request.user)
     if request.user.is_superuser:
-        totalPenalty = 0
+        return redirect(reverse('sportsEquipment:pendingRequest'))
     else:
-        totalPenalty = userProfile.totalPenalty
-    return render(request,'home.html',{'userProfile': userProfile})
+        return redirect(reverse('sportsEquipment:viewRequest'))
 
 #method to perform an insert or update
 
@@ -60,6 +59,7 @@ def checkAvailability(request):
 
 @login_required
 def eqpRequest(request):
+    userProfile = UserProfileInfo.objects.get(user=request.user)
     if(request.method == "POST"):
         if(request.user.is_authenticated):
             form = EqpmntRequestForm(request.POST)
@@ -71,6 +71,7 @@ def eqpRequest(request):
                 user = request.user
                 equipmentRequest = EquipmentRequest()
                 currentDateTime = datetime.today()
+                print(currentDateTime)
                 requestedQuantity = request.POST['EqpQuantity']
                 
                 
@@ -78,9 +79,12 @@ def eqpRequest(request):
                 equipmentRequest.eqp            = Equipments.objects.get(pk=int(request.POST['EqpName'],10))
                 equipmentRequest.user           = user
                 equipmentRequest.dtOfRequest    = currentDateTime
-                equipmentRequest.dtAvailed      = datetime.today()
-                equipmentRequest.dtOfExpRet     = currentDateTime + timedelta(days=7)
+                print("date of Req")
+                print(currentDateTime)
+                # equipmentRequest.dtAvailed      = datetime.today()
+                # equipmentRequest.dtOfExpRet     = currentDateTime + timedelta(days=1)
                 insertOrUpdate(equipmentRequest)
+
                 return redirect(reverse('sportsEquipment:viewRequest'))
             else:
                 return HttpResponse("Equipment not available")
@@ -92,12 +96,13 @@ def eqpRequest(request):
         form = EqpmntRequestForm()
         print(form.lstEqpmnt)
         # form.EqpName = choices = [(x.eqpId, x.eqpName) for x in lstEqpmnt]
-        return render(request, 'EndUser/eqpRequest.html', {'form' : form});
+        return render(request, 'EndUser/eqpRequest.html', {'form' : form,'userProfile': userProfile});
     # return home(request);
 
 #method to add equiment by admin
 @login_required
 def addEquip(request):
+    userProfile = UserProfileInfo.objects.get(user=request.user)
     if(request.method=="POST"):
         form = addEqpForm(request.POST)
         if form.is_valid():
@@ -106,7 +111,8 @@ def addEquip(request):
     else:
         form = addEqpForm()
         context ={
-            'form' : form
+            'form' : form,
+            'userProfile': userProfile
         }
         return render(request, "AdminUser/addEquip.html",context)
 
@@ -115,10 +121,11 @@ def addEquip(request):
 #method to check penalty of users
 @login_required
 def penalty(request):
+    userProfile = UserProfileInfo.objects.get(user=request.user)
     context = list(UserProfileInfo.objects.order_by('totalPenalty'))
     print(context)
     #print("No of requests: ", len(context))
-    return render(request, 'AdminUser/viewPenalty.html', {'context': context});
+    return render(request, 'AdminUser/viewPenalty.html', {'context': context,'userProfile': userProfile});
     #return render(request, "AdminUser/viewPenalty.html")
     # print("Check penalty is working!!")
     # return viewInventory(request)
@@ -148,7 +155,7 @@ def penalty(request):
 #method to edit equipment list by Admin
 @login_required
 def editEquipList(request,pk):
-    
+    userProfile = UserProfileInfo.objects.get(user=request.user)
     item = get_object_or_404(Equipments,eqpId = pk)
 
     if request.method == "POST":
@@ -160,7 +167,7 @@ def editEquipList(request,pk):
 
     else:
         form = editForm(instance = item)
-        return render(request,'AdminUser/editEquipList.html',{'form':form})
+        return render(request,'AdminUser/editEquipList.html',{'form':form,'userProfile': userProfile})
 
 
 
@@ -168,54 +175,74 @@ def editEquipList(request,pk):
 #method to delete a equip
 #@login_required
 def deleteEqp(request,pk):
+    userProfile = UserProfileInfo.objects.get(user=request.user)
     Equipments.objects.filter(eqpId=pk).delete()
     items = Equipments.objects.all()
     print (items)
     context = {
-        'items' : items
+        'items' : items,
+        'userProfile': userProfile
     }
     return render(request,'AdminUser/deleteEquip.html',context)
-    #return redirect('AdminUser/viewEquipList.html')
 
+def utcToIst(lstRequest):
+    for request in lstRequest:
+        if request.dtOfRequest is not None:
+            request.dtOfRequest = request.dtOfRequest.astimezone(timezone('Asia/Kolkata'))
+        if request.dtOfExpRet is not None:
+            request.dtOfExpRet = request.dtOfExpRet.astimezone(timezone('Asia/Kolkata'))
+        if request.dtOfActualRet is not None:
+            request.dtOfActualRet = request.dtOfActualRet.astimezone(timezone('Asia/Kolkata'))
+        if request.dtAvailed is not None:
+            request.dtAvailed = request.dtAvailed.astimezone(timezone('Asia/Kolkata'))
+
+    return lstRequest
 
 #method to view request status for equipments by students
 @login_required
 def viewRequest(request):
+    userProfile = UserProfileInfo.objects.get(user=request.user)
     user = request.user
     print(user)
     lstRequest = list(EquipmentRequest.objects.filter(user=user).order_by('-dtOfRequest'))
     print(lstRequest)
+    lstRequest = utcToIst(lstRequest)
+    
+        # request.dtOfRequest = request.dtOfRequest.astimezone(timezone('Asia/Kolkata'))
     print("No of requests: ", len(lstRequest))
-    return render(request, 'EndUser/viewRequest.html', {'lstRequest': lstRequest});
+    return render(request, 'EndUser/viewRequest.html', {'lstRequest': lstRequest,'userProfile': userProfile});
 
 
 
 #method to view inventory
 @login_required
 def viewInventory(request):
-    #user = request.user
-    #print(user)
+    userProfile = UserProfileInfo.objects.get(user=request.user)
     context = list(Equipments.objects.order_by('-eqpId'))
     for req in context:
         req.eqpQuantityTaken = req.eqpQuantity - req.eqpQuantityTaken
     print(context)
     #print("No of requests: ", len(context))
-    return render(request, 'AdminUser/viewEquipList.html', {'context': context});
+    return render(request, 'AdminUser/viewEquipList.html', {'context': context,'userProfile': userProfile});
 
 
 #method to view all pending requests to be processed by the sports room admin
 @login_required
 def pendingRequest(request):
+    userProfile = UserProfileInfo.objects.get(user=request.user)
     lstPendingRequest = list(EquipmentRequest.objects.filter(reqStatus = 0).order_by('-dtOfRequest'))
+    lstPendingRequest = utcToIst(lstPendingRequest)
     print("No of pending requests: ",len(lstPendingRequest))
-    return render(request, 'AdminUser/pendingRequest.html', {'lstPendingRequest' : lstPendingRequest});
+    return render(request, 'AdminUser/pendingRequest.html', {'lstPendingRequest' : lstPendingRequest,'userProfile': userProfile});
 
 #method to view all processed requests to be by the sports room admin
 @login_required
 def approvedRequest(request):
+    userProfile = UserProfileInfo.objects.get(user=request.user)
     lstProcessedRequest = list(EquipmentRequest.objects.filter(reqStatus__in = [1,2,3]).order_by('-dtOfRequest'))
+    lstProcessedRequest = utcToIst(lstProcessedRequest)
     print("No of processed requests: ", len(lstProcessedRequest))
-    return render(request, 'AdminUser/processedRequest.html', {'lstProcessedRequest': lstProcessedRequest});
+    return render(request, 'AdminUser/processedRequest.html', {'lstProcessedRequest': lstProcessedRequest,'userProfile': userProfile});
 
 #method to process a pending requests by the sports room admin
 @login_required
@@ -236,6 +263,10 @@ def processRequest(request):
             penReq.reqStatus    = 1
             penReq.dtAvailed    = currentTime
             penReq.dtOfExpRet   = currentTime + timedelta(days=1)
+            print("date of process")
+            print(currentTime)
+            print("date of dtOfExpRet")
+            print(currentTime + timedelta(days=1))
             eqp.eqpQuantityTaken += requestedQuantity
             insertOrUpdate(eqp)
         else :
@@ -244,7 +275,7 @@ def processRequest(request):
         penReq.reqStatus    = 2
         penReq.dtAvailed    = currentTime
         penReq.dtOfExpRet   = currentTime
-        penReq.dtOfActualRet= currentTime
+        penReq.dtOfActualRet= None
 
     insertOrUpdate(penReq)
     return pendingRequest(request)
@@ -259,6 +290,8 @@ def processReturnRequest(request):
     currentTime = datetime.today()
     dailyPenalty = settings.DAILY_PENALTY
     delta = currentTime.date() - returnRequest.dtOfExpRet.date()
+    print("date of actual return")
+    print(currentTime)
     print(delta.days)
     penaltyAmount = 0
     if (delta.days > 0):
