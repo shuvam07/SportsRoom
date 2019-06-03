@@ -14,11 +14,12 @@ from .models import *
 from .forms import *
 from django.views import generic
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from rest_framework import viewsets
+from .serializers import *
 #from django.core.urlresolvers import reverse_lazy
 
 # Create your views here.
-
-#method to render home page ater login
+#method to render home page after login
 @login_required
 def home(request):
     userProfile = UserProfileInfo.objects.get(user=request.user)
@@ -230,7 +231,7 @@ def viewInventory(request):
 @login_required
 def pendingRequest(request):
     userProfile = UserProfileInfo.objects.get(user=request.user)
-    lstPendingRequest = list(EquipmentRequest.objects.filter(reqStatus = 0).order_by('-dtOfRequest'))
+    lstPendingRequest = list(EquipmentRequest.objects.filter(reqStatus = 0).order_by('user','-dtOfRequest'))
     lstPendingRequest = utcToIst(lstPendingRequest)
     print("No of pending requests: ",len(lstPendingRequest))
     return render(request, 'AdminUser/pendingRequest.html', {'lstPendingRequest' : lstPendingRequest,'userProfile': userProfile});
